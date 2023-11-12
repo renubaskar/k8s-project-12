@@ -3,26 +3,20 @@ pipeline {
     stages {
         stage('Pull Code From GitHub') {
             steps {
-                git 'https://github.com/Iam-mithran/kuber.git'
+                git 'https://github.com/renubaskar/k8s-project-12.git'
             }
         }
         stage('Build the Docker image') {
             steps {
-                sh 'sudo docker build -t newimage /var/lib/jenkins/workspace/kuber'
-                sh 'sudo docker tag newimage iammithran/newimage:latest'
-                sh 'sudo docker tag newimage iammithran/newimage:${BUILD_NUMBER}'
+                sh 'sudo docker build -t k8simage /var/lib/jenkins/workspace/k8s-project-12'
+                sh 'sudo docker tag k8simage renubaskar7/k8simage:latest'
+                sh 'sudo docker tag k8simage renubaskar7/k8simage:${BUILD_NUMBER}'
             }
         }
         stage('Push the Docker image') {
             steps {
-                sh 'sudo docker image push iammithran/newimage:latest'
-                sh 'sudo docker image push iammithran/newimage:${BUILD_NUMBER}'
-            }
-        }
-        stage('Deploy on Kubernetes') {
-            steps {
-                sh 'kubectl apply -f /var/lib/jenkins/workspace/kuber/pod.yaml'
-                sh 'kubectl rollout restart deployment loadbalancer-pod'
+                sh 'sudo docker image push renubaskar7/k8simage:latest'
+                sh 'sudo docker image push renubaskar7/k8simage:${BUILD_NUMBER}'
             }
         }
     }
